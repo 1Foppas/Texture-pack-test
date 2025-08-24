@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Minecraft Texture Pack Builder</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+</head>
+<body>
+  <h1>Build Your Texture Pack</h1>
+
+  <label><input type="checkbox" id="optBlock"> Include Block Textures</label><br>
+  <label><input type="checkbox" id="optItem"> Include Item Textures</label><br>
+
+  <button onclick="buildZip()">Download Texture Pack</button>
+
+  <script>
+    async function buildZip() {
+      const zip = new JSZip();
+
+      // Always include pack.mcmeta + pack.png
+      await addFile(zip, "pack.mcmeta");
+      await addFile(zip, "pack.png");
+
+      // Base path for textures
+      const basePath = "assets/minecraft/textures/";
+
+      // Option 1: block textures
+      if (document.getElementById("optBlock").checked) {
+        await addFolder(zip, basePath + "block/");
+      }
+
+      // Option 2: item textures
+      if (document.getElementById("optItem").checked) {
+        await addFolder(zip, basePath + "item/");
+      }
+
+      const content = await zip.generateAsync({type:"blob"});
+      saveAs(content, "texture pack test.zip");
+    }
+
+    // Add a single file
+    async function addFile(zip, path) {
+      const response = await fetch(path);
+      if (response.ok) {
+        const blob = await response.blob();
+        zip.file(path, blob);
+      }
+    }
+
+    // Add all files in a folder (this relies on you listing them in a JSON)
+    async function addFolder(zip, folderPath) {
+      // 👇 You must create a file list for each folder
+      const response = await fetch(folderPath + "filelist.json");
+      if (!response.ok) return;
+      const files = await response.json();
+
+      for (const file of files) {
+        await addFile(zip, folderPath + file);
+      }
+    }
+  </script>
+</body>
+</html>
