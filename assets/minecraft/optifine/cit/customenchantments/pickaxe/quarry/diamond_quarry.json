@@ -1,0 +1,43 @@
+{
+	"parent": "item/generated",
+	"textures": {
+		"layer0": "minecraft:optifine/cit/customenchantments/pickaxe/quarry/diamond_quarry"
+	},
+	"display": {
+		"thirdperson_righthand": {
+			"rotation": [45, 90, 0],
+			"translation": [0, 7, 0],
+			"scale": [1.25, 1.25, 1]
+		},
+		"thirdperson_lefthand": {
+			"rotation": [45, -90, 0],
+			"translation": [0, 7, 0],
+			"scale": [1.25, 1.25, 1]
+		},
+		"firstperson_righthand": {
+			"rotation": [23, 90, 0],
+			"translation": [5, -1, -8.25],
+			"scale": [1, 1, 0.75]
+		},
+		"firstperson_lefthand": {
+			"rotation": [20, -90, 0],
+			"translation": [4, 0, -7.5]
+		},
+		"ground": {
+			"translation": [0, 4, 0],
+			"scale": [2, 2, 1]
+		},
+		"gui": {
+			"scale": [1.25, 1.25, 1]
+		},
+		"head": {
+			"translation": [0, 15, 0],
+			"scale": [1.5, 1.5, 1]
+		},
+		"fixed": {
+			"rotation": [0, 0, 90],
+			"translation": [0, 0, -0.5],
+			"scale": [1.5, 1.5, 1.5]
+		}
+	}
+}

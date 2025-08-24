@@ -1,0 +1,28 @@
+{
+    "parent":"item/handheld",
+    "textures":{
+    "layer0": "minecraft:item/diamond_quarry"
+    },
+    "display":{
+    "firstperson_righthand":{
+    "rotation": [0, 90, 0],
+    "translation": [0, 0, -10],
+    "scale": [1.5, 1.5, 1]
+    },
+    "thirdperson_righthand":{
+    "rotation": [45, 90, 0],
+    "translation": [0, 20, 0],
+    "scale": [1.5, 1.5, 1]
+    },
+    "gui": {
+      "rotation": [0, 0, 0],
+      "translation": [0, 10, 0],
+      "scale": [15.3, 15.3, 15.3]
+    },
+        "ground": {
+        "rotation": [0, 0, 0],
+      "translation": [0, 10, 0],
+      "scale": [50.3, 50.3, 50.3]
+        }
+    }
+}

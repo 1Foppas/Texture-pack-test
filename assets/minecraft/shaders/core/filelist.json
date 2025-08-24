@@ -1,0 +1,5 @@
+[ 
+  "position_tex_color.vsh", 
+  "rendertype_text.fsh", 
+  "rendertype_text_intensity.fsh", 
+]

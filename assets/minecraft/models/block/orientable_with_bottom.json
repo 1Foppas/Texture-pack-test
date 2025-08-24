@@ -1,0 +1,1 @@
+{"credit":"By Ewan Howell","parent":"block/cube","display":{"firstperson_righthand":{"rotation":[0,135,0],"scale":[0.2,0.2,0.2]}},"textures":{"particle":"#front","down":"#bottom","up":"#top","north":"#front","east":"#side","south":"#side","west":"#side"}}

@@ -1,0 +1,71 @@
+Sword Enchantments:
+
+Unbroken chain ✔
+- increases damage after each hit without interruption 
+
+First strike ✔
+- deals a lot of damage on your first hit 
+
+Adrenaline ✔
+- gives high levels strength after killing a player
+
+Trickster ✔
+- low chance to scramble someone's hotbar
+
+Underdog ✔
+- deals extra damage if youre on low health
+
+Lifesteal ✔
+- medium % chance to gain regen on hits
+
+Fling ✔
+launches people into the air
+
+Slayer ✔
+- kills many mobs at once
+
+Axe Enchantments:
+
+Sandpaper ✔
+- increases damage to armor durability
+
+Helmet Enchantments:
+
+Heavenly ✔
+- saves your life in exchange for durability
+
+Unstable ✔
+- teleports w/ a chorus fruit if you hit low health
+
+Sustenance ✔
+- heals some hunger every few seconds
+
+
+Chestplate Enchantments:
+Berserk ✔
+- gives strength after being hit
+
+Shock ✔
+- blocks 1 hit every 30 seconds
+
+Clapback ✔
+- hit your enemy back for what they hit you with 2x damage
+
+Leggings Enchantments:
+
+Endurance ✔
+- perm speed 1
+
+Lifebloom ✔
+- perm regen 1 to teammates
+
+Athletic ✔
+- increased speed the longer you run
+
+Boots Enchantments:
+
+Ninja ✔
+- gives immunity to glowing and invis after shifting
+
+Immunity ✔
+- immune to debuffs
