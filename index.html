@@ -1,27 +1,78 @@
-<script>
-async function addFolder(zip, path) {
-  try {
-    const response = await fetch(path + "/filelist.json");
-    if (!response.ok) {
-      console.warn("No filelist.json in " + path);
-      return;
-    }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Texture Pack Builder</title>
+</head>
+<body>
+  <h1>Build Your Texture Pack</h1>
+  
+  <label>
+    <input type="checkbox" id="block">
+    Include block textures
+  </label><br>
+  
+  <label>
+    <input type="checkbox" id="item">
+    Include item textures
+  </label><br><br>
 
-    const files = await response.json();
+  <button id="downloadBtn">Download Texture Pack</button>
 
-    for (const file of files) {
-      if (file.endsWith(".png") || file.endsWith(".mcmeta") || file.endsWith(".json")) {
-        // add file to the zip
-        const fileResp = await fetch(path + "/" + file);
-        const blob = await fileResp.blob();
-        zip.file(path + "/" + file, blob);
-      } else {
-        // if it's a folder, recurse
-        await addFolder(zip, path + "/" + file);
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+  <script>
+    async function addFolder(zip, path) {
+      try {
+        const response = await fetch(path + "/filelist.json");
+        if (!response.ok) {
+          console.warn("No filelist.json in " + path);
+          return;
+        }
+
+        const entries = await response.json();
+
+        for (const entry of entries) {
+          if (entry.endsWith(".png") || entry.endsWith(".mcmeta") || entry.endsWith(".json")) {
+            // add a file
+            const fileResp = await fetch(path + "/" + entry);
+            const blob = await fileResp.blob();
+            zip.file(path + "/" + entry, blob);
+          } else {
+            // treat as subfolder
+            await addFolder(zip, path + "/" + entry);
+          }
+        }
+      } catch (err) {
+        console.error("Error reading folder:", path, err);
       }
     }
-  } catch (err) {
-    console.error("Error reading folder:", path, err);
-  }
-}
-</script>
+
+    document.getElementById("downloadBtn").addEventListener("click", async () => {
+      const zip = new JSZip();
+
+      // always add base pack files
+      const baseFiles = ["pack.mcmeta", "pack.png"];
+      for (const baseFile of baseFiles) {
+        const resp = await fetch(baseFile);
+        if (resp.ok) {
+          const blob = await resp.blob();
+          zip.file(baseFile, blob);
+        }
+      }
+
+      // add selected folders
+      if (document.getElementById("block").checked) {
+        await addFolder(zip, "assets/minecraft/textures/block");
+      }
+      if (document.getElementById("item").checked) {
+        await addFolder(zip, "assets/minecraft/textures/item");
+      }
+
+      // create and download the zip
+      const blob = await zip.generateAsync({ type: "blob" });
+      saveAs(blob, "texture pack test.zip");
+    });
+  </script>
+</body>
+</html>
