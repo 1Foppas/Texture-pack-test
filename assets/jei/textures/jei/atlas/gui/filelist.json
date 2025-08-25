@@ -1,17 +1,17 @@
-[ 
-  "bookmark_list_background.png", 
-  "bookmark_list_slot_background.png", 
-  "button_disabled.png", 
-  "button_enabled.png", 
-  "button_highlight.png", 
-  "catalyst_tab.png", 
-  "gui_background.png", 
-  "ingredient_list_background.png", 
-  "ingredient_list_slot_background.png", 
-  "recipe_catalyst_slot_background.png", 
-  "search_background.png", 
-  "single_recipe_background.png", 
-  "slot.png", 
-  "tab_selected.png", 
-  "tab_unselected.png", 
-]
+[
+  "bookmark_list_background.png" 
+  ,"bookmark_list_slot_background.png" 
+  ,"button_disabled.png" 
+  ,"button_enabled.png" 
+  ,"button_highlight.png" 
+  ,"catalyst_tab.png" 
+  ,"gui_background.png" 
+  ,"ingredient_list_background.png" 
+  ,"ingredient_list_slot_background.png" 
+  ,"recipe_catalyst_slot_background.png" 
+  ,"search_background.png" 
+  ,"single_recipe_background.png" 
+  ,"slot.png" 
+  ,"tab_selected.png" 
+  ,"tab_unselected.png" 
+] 

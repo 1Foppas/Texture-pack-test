@@ -1,8 +1,8 @@
-[ 
-  "dungeon.png", 
-  "enchantment.png", 
-  "mob.png", 
-  "plant.png", 
-  "villager.png", 
-  "world_gen.png", 
-]
+[
+  "dungeon.png" 
+  ,"enchantment.png" 
+  ,"mob.png" 
+  ,"plant.png" 
+  ,"villager.png" 
+  ,"world_gen.png" 
+] 

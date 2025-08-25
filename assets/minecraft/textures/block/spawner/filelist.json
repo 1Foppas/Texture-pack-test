@@ -1,19 +1,19 @@
-[ 
-  "blaze.png", 
-  "cow.png", 
-  "creeper.png", 
-  "enderman.png", 
-  "husk.png", 
-  "iron_golem.png", 
-  "iron_golem_3d_test.png", 
-  "iron_golem_spawner.png", 
-  "note22.png", 
-  "note221.png", 
-  "note223.png", 
-  "note2234.png", 
-  "note322.png", 
-  "silverfish.png", 
-  "skeleton.png", 
-  "spawner_fixed.png", 
-  "witch.png", 
-]
+[
+  "blaze.png" 
+  ,"cow.png" 
+  ,"creeper.png" 
+  ,"enderman.png" 
+  ,"husk.png" 
+  ,"iron_golem.png" 
+  ,"iron_golem_3d_test.png" 
+  ,"iron_golem_spawner.png" 
+  ,"note22.png" 
+  ,"note221.png" 
+  ,"note223.png" 
+  ,"note2234.png" 
+  ,"note322.png" 
+  ,"silverfish.png" 
+  ,"skeleton.png" 
+  ,"spawner_fixed.png" 
+  ,"witch.png" 
+] 

@@ -1,7 +1,7 @@
-[ 
-  "empty_battery_input_slot.png", 
-  "empty_battery_output_slot.png", 
-  "empty_tank_input_slot.png", 
-  "empty_tank_output_slot.png", 
-  "empty_upgrade_slot.png", 
-]
+[
+  "empty_battery_input_slot.png" 
+  ,"empty_battery_output_slot.png" 
+  ,"empty_tank_input_slot.png" 
+  ,"empty_tank_output_slot.png" 
+  ,"empty_upgrade_slot.png" 
+] 

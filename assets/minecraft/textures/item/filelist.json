@@ -1,22 +1,22 @@
-[ 
-  "empty_armor_slot_boots.png", 
-  "empty_armor_slot_chestplate.png", 
-  "empty_armor_slot_helmet.png", 
-  "empty_armor_slot_leggings.png", 
-  "empty_armor_slot_shield.png", 
-  "empty_slot_amethyst_shard.png", 
-  "empty_slot_axe.png", 
-  "empty_slot_diamond.png", 
-  "empty_slot_emerald.png", 
-  "empty_slot_hoe.png", 
-  "empty_slot_ingot.png", 
-  "empty_slot_lapis_lazuli.png", 
-  "empty_slot_pickaxe.png", 
-  "empty_slot_quartz.png", 
-  "empty_slot_redstone_dust.png", 
-  "empty_slot_shovel.png", 
-  "empty_slot_smithing_template_armor_trim.png", 
-  "empty_slot_smithing_template_netherite_upgrade.png", 
-  "empty_slot_sword.png", 
-  "music_disc_precipice.png", 
-]
+[
+  "empty_armor_slot_boots.png" 
+  ,"empty_armor_slot_chestplate.png" 
+  ,"empty_armor_slot_helmet.png" 
+  ,"empty_armor_slot_leggings.png" 
+  ,"empty_armor_slot_shield.png" 
+  ,"empty_slot_amethyst_shard.png" 
+  ,"empty_slot_axe.png" 
+  ,"empty_slot_diamond.png" 
+  ,"empty_slot_emerald.png" 
+  ,"empty_slot_hoe.png" 
+  ,"empty_slot_ingot.png" 
+  ,"empty_slot_lapis_lazuli.png" 
+  ,"empty_slot_pickaxe.png" 
+  ,"empty_slot_quartz.png" 
+  ,"empty_slot_redstone_dust.png" 
+  ,"empty_slot_shovel.png" 
+  ,"empty_slot_smithing_template_armor_trim.png" 
+  ,"empty_slot_smithing_template_netherite_upgrade.png" 
+  ,"empty_slot_sword.png" 
+  ,"music_disc_precipice.png" 
+] 
