@@ -2,139 +2,151 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Texture Pack Builder</title>
+  <title>Texture Pack Test</title>
   <style>
-    .sub-options {
-      margin-left: 20px;
-      display: none;
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    h1 {
+      font-size: 24px;
+      margin-bottom: 10px;
     }
     .toggle {
       cursor: pointer;
       font-weight: bold;
+      display: inline-block;
+      margin-top: 10px;
+      margin-bottom: 5px;
+    }
+    .sub-options {
+      margin-left: 20px;
+      display: none;
+    }
+    label {
+      margin-left: 5px;
     }
   </style>
 </head>
 <body>
-  <h1>Build Your Texture Pack</h1>
+  <h1>Texture Pack Test</h1>
 
-<!-- Main ores group -->
-<input type="checkbox" id="ores">
-<span class="toggle" onclick="toggleSub('ores-sub', this)">Ores ▼</span>
-<div id="ores-sub" class="sub-options"></div>
+  <!-- Always included files -->
+  <input type="checkbox" id="base" data-path="" checked disabled>
+  <label for="base">Base pack (pack.mcmeta, pack.png)</label><br>
 
-  <!-- Items group -->
-  <label>
-    <input type="checkbox" id="item">
-    Include item textures
-  </label><br><br>
+  <!-- Ores -->
+  <span class="toggle" onclick="toggleSub('ores-sub', this)">Ores ▼</span>
+  <div id="ores-sub" class="sub-options">
+    <input type="checkbox" id="ores" data-path="assets/minecraft/textures/block">
+    <label for="ores">All Ores</label><br>
+  </div>
 
-  <button id="downloadBtn">Download Texture Pack</button>
+  <!-- Items -->
+  <input type="checkbox" id="items" data-path="assets/minecraft/textures/item">
+  <label for="items">Items</label><br>
+
+  <!-- Customs -->
+  <span class="toggle" onclick="toggleSub('customs-sub', this)">Customs ▼</span>
+  <div id="customs-sub" class="sub-options">
+
+    <!-- Custom Enchantments -->
+    <span class="toggle" onclick="toggleSub('custom-enchants-sub', this)">Custom Enchantments ▼</span>
+    <div id="custom-enchants-sub" class="sub-options">
+
+      <input type="checkbox" id="armor-models" data-path="assets/minecraft/optifine/cit/customenchantments/armor_layer">
+      <label for="armor-models">Armor Models</label><br>
+
+      <input type="checkbox" id="armor-icons" data-path="assets/minecraft/optifine/cit/customenchantments/armor">
+      <label for="armor-icons">Armor Icons</label><br>
+
+      <input type="checkbox" id="rest" data-path="assets/minecraft/optifine/cit/customitems">
+      <label for="rest">Rest</label><br>
+
+    </div>
+
+    <!-- Custom Items (empty for now) -->
+    <span class="toggle" onclick="toggleSub('custom-items-sub', this)">Custom Items ▼</span>
+    <div id="custom-items-sub" class="sub-options">
+      <!-- You can add checkboxes here later -->
+    </div>
+  </div>
+
+  <br><br>
+  <button onclick="downloadPack()">Download Texture Pack</button>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
   <script>
-function toggleSub(id, el) {
-  const container = document.getElementById(id);
-  if (container.style.display === "none" || container.style.display === "") {
-    container.style.display = "block";
-    el.textContent = el.textContent.replace("▼", "▲");
-  } else {
-    container.style.display = "none";
-    el.textContent = el.textContent.replace("▲", "▼");
-  }
-}
-    // load filelist for ores sub-options
-    async function loadSubOptions(path, containerId, groupId) {
-      try {
-        const resp = await fetch(path + "/filelist.json");
-        if (!resp.ok) return;
-        const files = await resp.json();
-        const container = document.getElementById(containerId);
-
-        files.forEach(file => {
-          if (file.endsWith(".png")) {
-            const id = groupId + "-" + file.replace(/\W/g, "");
-            const displayName = file.replace(".png", "").replace(/_/g, " ");
-            const label = document.createElement("label");
-            label.innerHTML = `<input type="checkbox" class="${groupId}-child" id="${id}" value="${file}"> ${displayName}<br>`;
-            container.appendChild(label);
-          }
-        });
-
-        // link parent checkbox to children
-        const parent = document.getElementById(groupId);
-        parent.addEventListener("change", () => {
-          const children = document.querySelectorAll("." + groupId + "-child");
-          children.forEach(ch => ch.checked = parent.checked);
-        });
-
-        // if any child changes, uncheck parent if not all are selected
-        container.addEventListener("change", () => {
-          const children = document.querySelectorAll("." + groupId + "-child");
-          parent.checked = [...children].every(ch => ch.checked);
-        });
-
-      } catch (e) {
-        console.error("Error loading suboptions", e);
+    function toggleSub(id, el) {
+      const sub = document.getElementById(id);
+      if (sub.style.display === "none" || sub.style.display === "") {
+        sub.style.display = "block";
+        el.textContent = el.textContent.replace("▼","▲");
+      } else {
+        sub.style.display = "none";
+        el.textContent = el.textContent.replace("▲","▼");
       }
     }
 
-    async function addFiles(zip, path, files) {
-      for (const file of files) {
-        const resp = await fetch(path + "/" + file);
-        if (resp.ok) {
-          const blob = await resp.blob();
-          zip.file(path + "/" + file, blob);
+    async function fetchFileList(path) {
+      const url = path
+        ? `assets/minecraft/${path}/filelist.json`
+        : "filelist.json";
+      try {
+        const res = await fetch(url);
+        if (!res.ok) return [];
+        return res.json();
+      } catch {
+        return [];
+      }
+    }
+
+    async function addFolder(zip, folderPath, basePath="") {
+      const list = await fetchFileList(folderPath);
+      for (const file of list) {
+        if (file.endsWith("/")) {
+          const subFolder = file.slice(0, -1);
+          await addFolder(zip.folder(subFolder), folderPath + "/" + subFolder, basePath + subFolder + "/");
+        } else {
+          const fileUrl = folderPath + "/" + file;
+          try {
+            const res = await fetch(fileUrl);
+            if (res.ok) {
+              const blob = await res.blob();
+              zip.file(basePath + file, blob);
+            }
+          } catch (e) {
+            console.error("Failed to fetch", fileUrl, e);
+          }
         }
       }
     }
 
-    document.getElementById("downloadBtn").addEventListener("click", async () => {
+    async function downloadPack() {
       const zip = new JSZip();
 
-      // always add base pack files
+      // Always include base
       const baseFiles = ["pack.mcmeta", "pack.png"];
-      for (const baseFile of baseFiles) {
-        const resp = await fetch(baseFile);
-        if (resp.ok) {
-          const blob = await resp.blob();
-          zip.file(baseFile, blob);
+      for (const f of baseFiles) {
+        const res = await fetch(f);
+        if (res.ok) {
+          zip.file(f, await res.blob());
         }
       }
 
-      // Ores: add selected files from block/ (or whole folder if parent checked)
-      const oresParent = document.getElementById("ores");
-      const oresChildren = document.querySelectorAll(".ores-child:checked");
-      if (oresParent.checked && oresChildren.length === 0) {
-        const resp = await fetch("assets/minecraft/textures/block/filelist.json");
-        const files = await resp.json();
-        await addFiles(zip, "assets/minecraft/textures/block", files.filter(f => f.endsWith(".png")));
-      } else {
-        for (const ch of oresChildren) {
-          const file = ch.value;
-          const resp = await fetch("assets/minecraft/textures/block/" + file);
-          if (resp.ok) {
-            const blob = await resp.blob();
-            zip.file("assets/minecraft/textures/block/" + file, blob);
-          }
+      // Add selected folders
+      const checks = document.querySelectorAll("input[type=checkbox]:checked:not(:disabled)");
+      for (const c of checks) {
+        const path = c.dataset.path;
+        if (path) {
+          await addFolder(zip, path, path + "/".split("/").slice(2).join("/"));
         }
       }
 
-      // Items: add whole folder if selected
-      if (document.getElementById("item").checked) {
-        const resp = await fetch("assets/minecraft/textures/item/filelist.json");
-        if (resp.ok) {
-          const files = await resp.json();
-          await addFiles(zip, "assets/minecraft/textures/item", files.filter(f => f.endsWith(".png")));
-        }
-      }
-
-      const blob = await zip.generateAsync({ type: "blob" });
-      saveAs(blob, "texture pack test.zip");
-    });
-
-    // Load ores suboptions at page load
-    loadSubOptions("assets/minecraft/textures/block", "ores-sub", "ores");
+      const content = await zip.generateAsync({ type: "blob" });
+      saveAs(content, "texture pack test.zip");
+    }
   </script>
 </body>
 </html>
