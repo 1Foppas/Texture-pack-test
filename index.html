@@ -10,8 +10,7 @@
     }
     .toggle {
       cursor: pointer;
-      color: blue;
-      text-decoration: underline;
+      font-weight: bold;
     }
   </style>
 </head>
@@ -52,8 +51,9 @@
         files.forEach(file => {
           if (file.endsWith(".png")) {
             const id = groupId + "-" + file.replace(/\W/g, "");
+            const displayName = file.replace(".png", "").replace(/_/g, " ");
             const label = document.createElement("label");
-            label.innerHTML = `<input type="checkbox" class="${groupId}-child" id="${id}" value="${file}"> ${file}<br>`;
+            label.innerHTML = `<input type="checkbox" class="${groupId}-child" id="${id}" value="${file}"> ${displayName}<br>`;
             container.appendChild(label);
           }
         });
@@ -103,12 +103,10 @@
       const oresParent = document.getElementById("ores");
       const oresChildren = document.querySelectorAll(".ores-child:checked");
       if (oresParent.checked && oresChildren.length === 0) {
-        // parent only, no children individually ticked -> add all from folder
         const resp = await fetch("assets/minecraft/textures/block/filelist.json");
         const files = await resp.json();
         await addFiles(zip, "assets/minecraft/textures/block", files.filter(f => f.endsWith(".png")));
       } else {
-        // add only selected children
         for (const ch of oresChildren) {
           const file = ch.value;
           const resp = await fetch("assets/minecraft/textures/block/" + file);
