@@ -17,12 +17,10 @@
 <body>
   <h1>Build Your Texture Pack</h1>
 
-  <!-- Main ores group -->
-  <label>
-    <input type="checkbox" id="ores">
-    <span class="toggle" onclick="toggleSub('ores-sub')">Ores ▼</span>
-  </label>
-  <div id="ores-sub" class="sub-options"></div>
+<!-- Main ores group -->
+<input type="checkbox" id="ores">
+<span class="toggle" onclick="toggleSub('ores-sub', this)">Ores ▼</span>
+<div id="ores-sub" class="sub-options"></div>
 
   <!-- Items group -->
   <label>
@@ -35,11 +33,16 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
   <script>
-    function toggleSub(id) {
-      const el = document.getElementById(id);
-      el.style.display = (el.style.display === "none" || el.style.display === "") ? "block" : "none";
-    }
-
+function toggleSub(id, el) {
+  const container = document.getElementById(id);
+  if (container.style.display === "none" || container.style.display === "") {
+    container.style.display = "block";
+    el.textContent = el.textContent.replace("▼", "▲");
+  } else {
+    container.style.display = "none";
+    el.textContent = el.textContent.replace("▲", "▼");
+  }
+}
     // load filelist for ores sub-options
     async function loadSubOptions(path, containerId, groupId) {
       try {
