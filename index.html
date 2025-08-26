@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Texture Pack test v0.1</title>
+  <title>TP test v0.1</title>
   <style>
     .sub-options {
       margin-left: 20px;
@@ -135,36 +135,6 @@ function toggleSub(id, el) {
 
     // Load ores suboptions at page load
     loadSubOptions("assets/minecraft/textures/block", "ores-sub", "ores");
-
-<!-- Customs parent -->
-<span class="toggle" onclick="toggleSub('customs-sub', this)">Customs ▼</span>
-<div id="customs-sub" class="sub-options">
-
-  <!-- Custom Enchantments (nested) -->
-  <span class="toggle" onclick="toggleSub('custom-enchants-sub', this)">Custom Enchantments ▼</span>
-  <div id="custom-enchants-sub" class="sub-options">
-
-    <!-- Armor Models -->
-    <input type="checkbox" id="armor-models" data-path="assets/minecraft/optifine/cit/customenchantments/armor_layer">
-    <label for="armor-models">Armor Models</label><br>
-
-    <!-- Armor Icons -->
-    <input type="checkbox" id="armor-icons" data-path="assets/minecraft/optifine/cit/customenchantments/armor">
-    <label for="armor-icons">Armor Icons</label><br>
-
-    <!-- Rest -->
-    <input type="checkbox" id="rest" data-path="assets/minecraft/optifine/cit/customitems">
-    <label for="rest">Rest</label><br>
-
-  </div>
-
-  <!-- Custom Items (empty for now, can add later) -->
-  <span class="toggle" onclick="toggleSub('custom-items-sub', this)">Custom Items ▼</span>
-  <div id="custom-items-sub" class="sub-options">
-    <!-- put checkboxes here when you decide what options you want -->
-  </div>
-</div>
-
   </script>
 </body>
 </html>
