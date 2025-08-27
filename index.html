@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Tp test v0.202</title>
+  <title>Tp test v0.203</title>
   <style>
     .sub-options {
       margin-left: 20px;
@@ -22,6 +22,22 @@
 <input type="checkbox" id="ores">
 <span class="toggle" onclick="toggleSub('ores-sub', this)">Ores ▶</span>
 <div id="ores-sub" class="sub-options"></div>
+<br>
+
+  <span class="toggle" onclick="toggleSub('customs-sub', this)">Customs ▶</span>
+  <div id="customs-sub" class="sub-options">
+  
+     <span class="toggle" onclick="toggleSub('custom-enchants-sub', this)">Custom Enchantments ▶</span>
+    <div id="custom-enchants-sub" class="sub-options">
+
+       <input type="checkbox" id="Carmor-models">
+      <label for="Carmor-models">Armor Models</label><br>
+
+       <input type="checkbox" id="Carmor-icons">
+      <label for="Carmor-icons">Armor Models</label><br>
+
+       <input type="checkbox" id="Ctools">
+      <label for="Ctools">Tools</label>
 
 <!-- Items group -->
 <br>
@@ -34,7 +50,6 @@
   <input type="checkbox" id="tools">
   Include tools textures (only /tools/)
 </label>
-
 
 
   <br><br>
@@ -50,7 +65,7 @@ function toggleSub(id, el) {
     el.textContent = el.textContent.replace("▶", "▼");
   } else {
     container.style.display = "none";
-    el.textContent = el.textContent.replace("▶", "▼");
+    el.textContent = el.textContent.replace("▼", "▶");
   }
 }
     // load filelist for ores sub-options
@@ -165,7 +180,15 @@ if (document.getElementById("item").checked) {
 if (document.getElementById("tools").checked) {
   await addFilesFromFolder(zip, "assets/minecraft/textures/item/tools", false);
 }
-
+if (document.getElementById("Ctools").checked) {
+  await addFilesFromFolder(zip, "assets/minecraft/optifine/cit/customenchantments", true);
+}
+if (document.getElementById("Carmor_icons").checked) {
+  await addFilesFromFolder(zip, "assets/minecraft/optifine/cit/customenchantments", true);
+}
+if (document.getElementById("Carmor_models").checked) {
+  await addFilesFromFolder(zip, "assets/minecraft/optifine/cit/customenchantments", true);
+}
 
       const blob = await zip.generateAsync({ type: "blob" });
       saveAs(blob, "texture pack test.zip");
