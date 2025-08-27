@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Tp test v0.22</title>
+  <title>Texture Pack Builder</title>
   <style>
     .sub-options {
       margin-left: 20px;
@@ -15,46 +15,20 @@
   </style>
 </head>
 <body>
-  <h1>tp test 522</h1>
+  <h1>Build Your Texture Pack</h1>
 
 <!-- Main ores group -->
 <input type="checkbox" id="ores">
 <span class="toggle" onclick="toggleSub('ores-sub', this)">Ores ▼</span>
-<div id="ores-sub" class="sub-options"></div><br>
+<div id="ores-sub" class="sub-options"></div>
 
   <!-- Items group -->
   <label>
     <input type="checkbox" id="item">
     Include item textures
-  </label><br>
+  </label><br><br>
 
-<!-- Customs -->
-  <span class="toggle" onclick="toggleSub('customs-sub', this)">Customs ▼</span>
-  <div id="customs-sub" class="sub-options"><br>
-
-    <!-- Custom Enchantments -->
-    <span class="toggle" onclick="toggleSub('custom-enchants-sub', this)">Custom Enchantments ▼</span>
-    <div id="custom-enchants-sub" class="sub-options">
-
-      <input type="checkbox" id="armor-models" data-path="assets/minecraft/optifine/cit/customenchantments/armor_layer">
-      <label for="armor-models">Armor Models</label><br>
-
-      <input type="checkbox" id="armor-icons" data-path="assets/minecraft/optifine/cit/customenchantments/armor">
-      <label for="armor-icons">Armor Icons</label><br>
-
-      <input type="checkbox" id="rest" data-path="assets/minecraft/optifine/cit/customitems">
-      <label for="rest">Rest</label><br>
-
-    </div>
-
-    <!-- Custom Items (empty for now) -->
-    <span class="toggle" onclick="toggleSub('custom-items-sub', this)">Custom Items ▼</span>
-    <div id="custom-items-sub" class="sub-options">
-      <!-- You can add checkboxes here later -->
-    </div>
-  </div>
-<br>
-  <button id"downloadBtn">Download Texture Pack</button>
+  <button id="downloadBtn">Download Texture Pack</button>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
