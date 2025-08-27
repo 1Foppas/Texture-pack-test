@@ -23,13 +23,21 @@
 <span class="toggle" onclick="toggleSub('ores-sub', this)">Ores ▼</span>
 <div id="ores-sub" class="sub-options"></div>
 
-  <!-- Items group -->
-  <br>
-  <label>
-    <input type="checkbox" id="item">
-    Include item textures
-  </label><br>
+<!-- Items group -->
+<br>
+<label>
+  <input type="checkbox" id="item">
+  Include item textures (with subfolders)
+</label>
+<br>
+<label>
+  <input type="checkbox" id="tools">
+  Include tools textures (only /tools/)
+</label>
 
+
+
+  <br><br>
   <button id="downloadBtn">Download Texture Pack</button>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -91,6 +99,32 @@ function toggleSub(id, el) {
       }
     }
 
+async function addFilesFromFolder(zip, basePath, includeSubfolders = false) {
+  const resp = await fetch(`${basePath}/filelist.json`);
+  if (!resp.ok) return;
+
+  const files = await resp.json();
+
+  for (const f of files) {
+    if (f === "filelist.json") continue;
+
+    if (f.endsWith("/")) {
+      // subfolder
+      if (includeSubfolders) {
+        await addFilesFromFolder(zip, `${basePath}/${f.replace(/\/$/, "")}`, includeSubfolders);
+      }
+    } else {
+      // file
+      const fileResp = await fetch(`${basePath}/${f}`);
+      if (fileResp.ok) {
+        const blob = await fileResp.blob();
+        zip.file(`${basePath}/${f}`, blob);
+      }
+    }
+  }
+}
+
+
     document.getElementById("downloadBtn").addEventListener("click", async () => {
       const zip = new JSZip();
 
@@ -122,14 +156,16 @@ function toggleSub(id, el) {
         }
       }
 
-      // Items: add whole folder if selected
-      if (document.getElementById("item").checked) {
-        const resp = await fetch("assets/minecraft/textures/item/filelist.json");
-        if (resp.ok) {
-          const files = await resp.json();
-          await addFiles(zip, "assets/minecraft/textures/item", files.filter(f => f.endsWith(".png")));
-        }
-      }
+// Items (whole folder, with subfolders)
+if (document.getElementById("item").checked) {
+  await addFilesFromFolder(zip, "assets/minecraft/textures/item", true);
+}
+
+// Tools only (just /item/tools/, no recursion)
+if (document.getElementById("tools").checked) {
+  await addFilesFromFolder(zip, "assets/minecraft/textures/item/tools", false);
+}
+
 
       const blob = await zip.generateAsync({ type: "blob" });
       saveAs(blob, "texture pack test.zip");
