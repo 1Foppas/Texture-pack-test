@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Tp test v0.102</title>
+  <title>Tp test v0.103</title>
   <style>
     .sub-options {
       margin-left: 20px;
@@ -154,10 +154,10 @@ function toggleSub(id, el) {
 
       // Items: add whole folder if selected
       if (document.getElementById("item").checked) {
-        const resp = await fetch("assets/minecraft/textures/item/filelist.json");
+        const resp = await fetch("assets/minecraft/textures/block/filelist.json");
         if (resp.ok) {
           const files = await resp.json();
-          await addFiles(zip, "assets/minecraft/textures/item", files.filter(f => f.endsWith(".png")));
+          await addFiles(zip, "assets/minecraft/textures/block", files.filter(f => f.endsWith(".png")));
         }
       }
 
