@@ -1,6 +1,8 @@
 [
-  "diamond_quarry.png" 
-  ,"diamond_quarry.properties" 
-  ,"netherite_quarry.png" 
-  ,"netherite_quarry.properties" 
-] 
+  "diamond_quarry.json"
+  ,"diamond_quarry.png"
+  ,"diamond_quarry.properties"
+  ,"netherite_quarry.json"
+  ,"netherite_quarry.png"
+  ,"netherite_quarry.properties"
+]

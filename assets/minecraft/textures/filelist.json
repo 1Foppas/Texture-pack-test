@@ -1,2 +1,7 @@
 [
-] 
+  "block/"
+  ,"gui/"
+  ,"item/"
+  ,"particle/"
+  ,"trims/"
+]

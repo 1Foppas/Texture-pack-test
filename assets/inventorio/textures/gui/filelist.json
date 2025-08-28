@@ -1,6 +1,7 @@
 [
-  "player_inventory.png" 
-  ,"player_inventory_dark.png" 
-  ,"widgets.png" 
-  ,"widgets_dark.png" 
-] 
+  "player_inventory.png"
+  ,"player_inventory_dark.png"
+  ,"widgets.png"
+  ,"widgets_dark.png"
+  ,"empty/"
+]

@@ -1,10 +1,11 @@
 [
-  "dark_widgets.png" 
-  ,"item_slot.png" 
-  ,"panel_dark.png" 
-  ,"panel_light.png" 
-  ,"slider_dark.png" 
-  ,"slider_light.png" 
-  ,"toggle_off.png" 
-  ,"toggle_on.png" 
-] 
+  "dark_widgets.png"
+  ,"item_slot.png"
+  ,"panel_dark.png"
+  ,"panel_light.png"
+  ,"slider_dark.png"
+  ,"slider_light.png"
+  ,"toggle_off.png"
+  ,"toggle_on.png"
+  ,"tab/"
+]

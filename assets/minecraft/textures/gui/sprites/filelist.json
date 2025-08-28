@@ -1,2 +1,16 @@
 [
-] 
+  "advancements/"
+  ,"container/"
+  ,"gamemode_switcher/"
+  ,"hud/"
+  ,"popup/"
+  ,"recipe_book/"
+  ,"server_list/"
+  ,"social_interactions/"
+  ,"spectator/"
+  ,"statistics/"
+  ,"toast/"
+  ,"transferable_list/"
+  ,"widget/"
+  ,"world_list/"
+]

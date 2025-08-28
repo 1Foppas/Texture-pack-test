@@ -1,2 +1,11 @@
 [
-] 
+  "ancient_debris.json"
+  ,"block.json"
+  ,"lectern.json"
+  ,"orientable_with_bottom.json"
+  ,"pumpkin.json"
+  ,"template_glazed_terracotta.json"
+  ,"template_ore.json"
+  ,"thin_block.json"
+  ,"spawner/"
+]
