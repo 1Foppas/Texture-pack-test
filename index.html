@@ -24,9 +24,11 @@
 <div id="ores-sub" class="sub-options"></div>
 <br>
 
+  <input type="checkbox" id="Customs">
   <span class="toggle" onclick="toggleSub('customs-sub', this)">Customs ▶</span>
   <div id="customs-sub" class="sub-options">
   
+    <input type="checkbox" id="Custom_enhants">
      <span class="toggle" onclick="toggleSub('custom-enchants-sub', this)">Custom Enchantments ▶</span>
     <div id="custom-enchants-sub" class="sub-options">
 
@@ -189,12 +191,18 @@ if (document.getElementById("tools").checked) {
   await addFilesFromFolder(zip, "assets/minecraft/textures/item/tools", false);
 }
 if (document.getElementById("Ctools").checked) {
-  await addFilesFromFolder(zip, "assets/minecraft/optifine/cit/customenchantments", true);
+  await addFilesFromFolder(zip, "assets/minecraft/optifine/cit/customenchantments/sword", true);
 }
 if (document.getElementById("Carmor_icons").checked) {
-  await addFilesFromFolder(zip, "assets/minecraft/optifine/cit/customenchantments", true);
+  await addFilesFromFolder(zip, "assets/minecraft/optifine/cit/customenchantments/armor_layer", true);
 }
 if (document.getElementById("Carmor_models").checked) {
+  await addFilesFromFolder(zip, "assets/minecraft/optifine/cit/customenchantments/armor", true);
+}
+if (document.getElementById("Customs").checked) {
+  await addFilesFromFolder(zip, "assets/minecraft/optifine/cit/customenchantments", true);
+}
+if (document.getElementById("Custom_enchants").checked) {
   await addFilesFromFolder(zip, "assets/minecraft/optifine/cit/customenchantments", true);
 }
 
