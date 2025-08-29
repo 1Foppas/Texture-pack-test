@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Tp test v0.205.2</title>
+  <title>Tp test v0.206</title>
   <style>
     .sub-options {
       margin-left: 20px;
@@ -36,7 +36,7 @@
       <label for="Carmor_models">Armor Models</label><br>
 
        <input type="checkbox" id="Carmor_icons">
-      <label for="Carmor_icons">Armor Models</label><br>
+      <label for="Carmor_icons">Armor Icons</label><br>
 
        <input type="checkbox" id="Ctools">
       <label for="Ctools">Tools</label>
@@ -212,6 +212,30 @@ if (document.getElementById("Custom_enchants").checked) {
 
     // Load ores suboptions at page load
     loadSubOptions("assets/minecraft/textures/block", "ores-sub", "ores");
+
+function linkParentToChildren(parentId, childIds) {
+  const parent = document.getElementById(parentId);
+  const children = childIds.map(id => document.getElementById(id));
+
+  // Parent → Children
+  parent.addEventListener("change", () => {
+    children.forEach(ch => ch.checked = parent.checked);
+  });
+
+  // Children → Parent
+  children.forEach(ch => {
+    ch.addEventListener("change", () => {
+      const allChecked = children.every(c => c.checked);
+      const noneChecked = children.every(c => !c.checked);
+      parent.checked = allChecked;
+      parent.indeterminate = !allChecked && !noneChecked;
+    });
+  });
+}
+
+// Example usage
+linkParentToChildren("Custom_enchants", ["Carmor_models", "Carmor_icons", "Ctools"]);
+
   </script>
 </body>
 </html>
