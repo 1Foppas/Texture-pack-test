@@ -1,9 +1,8 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Tp test v0.206</title>
+  <title>Tp test v0.206.2</title>
   <style>
     .sub-options {
       margin-left: 20px;
@@ -12,6 +11,10 @@
     .toggle {
       cursor: pointer;
       font-weight: bold;
+    }
+    /* Green checkbox when in partial (indeterminate) state */
+    input[type="checkbox"]:indeterminate {
+      accent-color: green;
     }
   </style>
 </head>
@@ -78,51 +81,57 @@ function toggleSub(id, el) {
     el.textContent = el.textContent.replace("▼", "▶");
   }
 }
-    // load filelist for ores sub-options
-    async function loadSubOptions(path, containerId, groupId) {
-      try {
-        const resp = await fetch(path + "/filelist.json");
-        if (!resp.ok) return;
-        const files = await resp.json();
-        const container = document.getElementById(containerId);
 
-        files.forEach(file => {
-          if (file.endsWith(".png")) {
-            const id = groupId + "-" + file.replace(/\W/g, "");
-            const displayName = file.replace(".png", "").replace(/_/g, " ");
-            const label = document.createElement("label");
-            label.innerHTML = `<input type="checkbox" class="${groupId}-child" id="${id}" value="${file}"> ${displayName}<br>`;
-            container.appendChild(label);
-          }
-        });
+// load filelist for ores sub-options
+async function loadSubOptions(path, containerId, groupId) {
+  try {
+    const resp = await fetch(path + "/filelist.json");
+    if (!resp.ok) return;
+    const files = await resp.json();
+    const container = document.getElementById(containerId);
 
-        // link parent checkbox to children
-        const parent = document.getElementById(groupId);
-        parent.addEventListener("change", () => {
-          const children = document.querySelectorAll("." + groupId + "-child");
-          children.forEach(ch => ch.checked = parent.checked);
-        });
-
-        // if any child changes, uncheck parent if not all are selected
-        container.addEventListener("change", () => {
-          const children = document.querySelectorAll("." + groupId + "-child");
-          parent.checked = [...children].every(ch => ch.checked);
-        });
-
-      } catch (e) {
-        console.error("Error loading suboptions", e);
+    files.forEach(file => {
+      if (file.endsWith(".png")) {
+        const id = groupId + "-" + file.replace(/\W/g, "");
+        const displayName = file.replace(".png", "").replace(/_/g, " ");
+        const label = document.createElement("label");
+        label.innerHTML = `<input type="checkbox" class="${groupId}-child" id="${id}" value="${file}"> ${displayName}<br>`;
+        container.appendChild(label);
       }
-    }
+    });
 
-    async function addFiles(zip, path, files) {
-      for (const file of files) {
-        const resp = await fetch(path + "/" + file);
-        if (resp.ok) {
-          const blob = await resp.blob();
-          zip.file(path + "/" + file, blob);
-        }
-      }
+    // link parent checkbox to children
+    const parent = document.getElementById(groupId);
+    parent.addEventListener("change", () => {
+      const children = document.querySelectorAll("." + groupId + "-child");
+      children.forEach(ch => ch.checked = parent.checked);
+      parent.indeterminate = false; // reset
+    });
+
+    // if any child changes, update parent (including indeterminate state)
+    container.addEventListener("change", () => {
+      const children = document.querySelectorAll("." + groupId + "-child");
+      const allChecked = [...children].every(ch => ch.checked);
+      const someChecked = [...children].some(ch => ch.checked);
+
+      parent.checked = allChecked;
+      parent.indeterminate = !allChecked && someChecked;
+    });
+
+  } catch (e) {
+    console.error("Error loading suboptions", e);
+  }
+}
+
+async function addFiles(zip, path, files) {
+  for (const file of files) {
+    const resp = await fetch(path + "/" + file);
+    if (resp.ok) {
+      const blob = await resp.blob();
+      zip.file(path + "/" + file, blob);
     }
+  }
+}
 
 async function addFilesFromFolder(zip, basePath, includeSubfolders = false) {
   const resp = await fetch(`${basePath}/filelist.json`);
@@ -149,93 +158,68 @@ async function addFilesFromFolder(zip, basePath, includeSubfolders = false) {
   }
 }
 
+document.getElementById("downloadBtn").addEventListener("click", async () => {
+  const zip = new JSZip();
 
-    document.getElementById("downloadBtn").addEventListener("click", async () => {
-      const zip = new JSZip();
+  // always add base pack files
+  const baseFiles = ["pack.mcmeta", "pack.png"];
+  for (const baseFile of baseFiles) {
+    const resp = await fetch(baseFile);
+    if (resp.ok) {
+      const blob = await resp.blob();
+      zip.file(baseFile, blob);
+    }
+  }
 
-      // always add base pack files
-      const baseFiles = ["pack.mcmeta", "pack.png"];
-      for (const baseFile of baseFiles) {
-        const resp = await fetch(baseFile);
-        if (resp.ok) {
-          const blob = await resp.blob();
-          zip.file(baseFile, blob);
-        }
+  // Ores: add selected files from block/ (or whole folder if parent checked)
+  const oresParent = document.getElementById("ores");
+  const oresChildren = document.querySelectorAll(".ores-child:checked");
+  if (oresParent.checked && oresChildren.length === 0) {
+    const resp = await fetch("assets/minecraft/textures/block/filelist.json");
+    const files = await resp.json();
+    await addFiles(zip, "assets/minecraft/textures/block", files.filter(f => f.endsWith(".png")));
+  } else {
+    for (const ch of oresChildren) {
+      const file = ch.value;
+      const resp = await fetch("assets/minecraft/textures/block/" + file);
+      if (resp.ok) {
+        const blob = await resp.blob();
+        zip.file("assets/minecraft/textures/block/" + file, blob);
       }
+    }
+  }
 
-      // Ores: add selected files from block/ (or whole folder if parent checked)
-      const oresParent = document.getElementById("ores");
-      const oresChildren = document.querySelectorAll(".ores-child:checked");
-      if (oresParent.checked && oresChildren.length === 0) {
-        const resp = await fetch("assets/minecraft/textures/block/filelist.json");
-        const files = await resp.json();
-        await addFiles(zip, "assets/minecraft/textures/block", files.filter(f => f.endsWith(".png")));
-      } else {
-        for (const ch of oresChildren) {
-          const file = ch.value;
-          const resp = await fetch("assets/minecraft/textures/block/" + file);
-          if (resp.ok) {
-            const blob = await resp.blob();
-            zip.file("assets/minecraft/textures/block/" + file, blob);
-          }
-        }
-      }
+  // Items (whole folder, with subfolders)
+  if (document.getElementById("item").checked) {
+    await addFilesFromFolder(zip, "assets/minecraft/textures/item", true);
+  }
 
-// Items (whole folder, with subfolders)
-if (document.getElementById("item").checked) {
-  await addFilesFromFolder(zip, "assets/minecraft/textures/item", true);
-}
+  // Tools only (just /item/tools/, no recursion)
+  if (document.getElementById("tools").checked) {
+    await addFilesFromFolder(zip, "assets/minecraft/textures/item/tools", false);
+  }
+  if (document.getElementById("Ctools").checked) {
+    await addFilesFromFolder(zip, "assets/minecraft/optifine/cit/customenchantments/sword", true);
+  }
+  if (document.getElementById("Carmor_icons").checked) {
+    await addFilesFromFolder(zip, "assets/minecraft/optifine/cit/customenchantments/armor_layer", true);
+  }
+  if (document.getElementById("Carmor_models").checked) {
+    await addFilesFromFolder(zip, "assets/minecraft/optifine/cit/customenchantments/armor", true);
+  }
+  if (document.getElementById("Customs").checked) {
+    await addFilesFromFolder(zip, "assets/minecraft/optifine/cit/customenchantments", true);
+  }
+  if (document.getElementById("Custom_enchants").checked) {
+    await addFilesFromFolder(zip, "assets/minecraft/optifine/cit/customenchantments", true);
+  }
 
-// Tools only (just /item/tools/, no recursion)
-if (document.getElementById("tools").checked) {
-  await addFilesFromFolder(zip, "assets/minecraft/textures/item/tools", false);
-}
-if (document.getElementById("Ctools").checked) {
-  await addFilesFromFolder(zip, "assets/minecraft/optifine/cit/customenchantments/sword", true);
-}
-if (document.getElementById("Carmor_icons").checked) {
-  await addFilesFromFolder(zip, "assets/minecraft/optifine/cit/customenchantments/armor_layer", true);
-}
-if (document.getElementById("Carmor_models").checked) {
-  await addFilesFromFolder(zip, "assets/minecraft/optifine/cit/customenchantments/armor", true);
-}
-if (document.getElementById("Customs").checked) {
-  await addFilesFromFolder(zip, "assets/minecraft/optifine/cit/customenchantments", true);
-}
-if (document.getElementById("Custom_enchants").checked) {
-  await addFilesFromFolder(zip, "assets/minecraft/optifine/cit/customenchantments", true);
-}
+  const blob = await zip.generateAsync({ type: "blob" });
+  saveAs(blob, "texture pack test.zip");
+});
 
-      const blob = await zip.generateAsync({ type: "blob" });
-      saveAs(blob, "texture pack test.zip");
-    });
-
-    // Load ores suboptions at page load
-    loadSubOptions("assets/minecraft/textures/block", "ores-sub", "ores");
-
-function linkParentToChildren(parentId, childIds) {
-  const parent = document.getElementById(parentId);
-  const children = childIds.map(id => document.getElementById(id));
-
-  // Parent → Children
-  parent.addEventListener("change", () => {
-    children.forEach(ch => ch.checked = parent.checked);
-  });
-
-  // Children → Parent
-  children.forEach(ch => {
-    ch.addEventListener("change", () => {
-      const allChecked = children.every(c => c.checked);
-      const noneChecked = children.every(c => !c.checked);
-      parent.checked = allChecked;
-      parent.indeterminate = !allChecked && !noneChecked;
-    });
-  });
-}
-
-// Example usage
-linkParentToChildren("Custom_enchants", ["Carmor_models", "Carmor_icons", "Ctools"]);
-
+// Load ores suboptions at page load
+loadSubOptions("assets/minecraft/textures/block", "ores-sub", "ores");
   </script>
 </body>
 </html>
